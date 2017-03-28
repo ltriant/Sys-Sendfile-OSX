@@ -19,10 +19,10 @@ sendfile(in, out, count = 0, offset = 0)
 		off_t bytes = count;
 		int ret = sendfile(in, out, offset, &bytes, NULL, 0);
 
-		if (ret == 0) {
-			XSRETURN_IV(bytes);
+		if ((ret == -1) && (bytes == 0) && (errno != EINTR) && (errno != EAGAIN)) {
+			XSRETURN_EMPTY;
 		}
 		else {
-			XSRETURN_EMPTY;
+			XSRETURN_IV(bytes);
 		}
 	}
