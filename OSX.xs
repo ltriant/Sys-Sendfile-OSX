@@ -1,7 +1,6 @@
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <sys/uio.h>
-#include <unistd.h>
 
 #define PERL_NO_GET_CONTEXT
 #include "EXTERN.h"
