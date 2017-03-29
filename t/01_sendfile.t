@@ -23,26 +23,10 @@ my $in = IO::Socket::INET->new(
 my $out_h = $listen->accept;
 
 my $count = 10;
-my $offset = 0;
-
-my $total_sent = 0;
-while (1) {
-	my $bytes = Sys::Sendfile::OSX::sendfile(
-		fileno($in_h),
-		$out_h->fileno,
-		$count,
-		$offset,
-	);
-
-	if ($bytes == 0) {
-		# eof
-		last;
-	}
-
-	$offset += $bytes;
-	$total_sent += $bytes;
-}
+my $total_sent = Sys::Sendfile::OSX::sendfile($in_h, $out_h, $count);
 
 is($total_sent, -s $in_h, "slurped all of \$0 into socket, $count bytes at a time");
+
+# TODO test non-blocking filehandles and sockets
 
 done_testing();
