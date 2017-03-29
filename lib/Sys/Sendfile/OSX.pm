@@ -67,7 +67,7 @@ contents of a filehandle to a streaming socket.
 As per the man pages, the sendfile() function was made available as of Mac
 OS X 10.5.
 
-=head1 FUNCTIONS
+=head1 EXPORTED FUNCTIONS
 
 =over
 
@@ -84,6 +84,10 @@ The filehandles can be globs or they can be L<IO::Handle>-like objects
 
 =back
 
+=head1 REPOSITORY
+
+L<https://github.com/ltriant/Sys-Sendfile-OSX>
+
 =head1 AUTHOR
 
 Luke Triantafyllidis <ltriant@cpan.org>
@@ -91,3 +95,8 @@ Luke Triantafyllidis <ltriant@cpan.org>
 =head1 SEE ALSO
 
 L<Sys::Sendfile>, sendfile(2)
+
+=head1 LICENSE
+
+This library is free software; you can redistribute it and/or modify it
+under the same terms as Perl itself.
