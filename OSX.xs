@@ -20,7 +20,7 @@ sendfile(in, out, count = 0)
 		size_t count;
 	CODE:
 		off_t bytes = count;
-		off_t total = 0;
+		off_t total = 0;  // doubles as the offset param
 
 		while (1) {
 			int ret = sendfile(in, out, total, &bytes, NULL, 0);
