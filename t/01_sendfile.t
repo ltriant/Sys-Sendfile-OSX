@@ -33,4 +33,7 @@ is($total_sent, -s $in_h, "sent all of \$0 into socket, $count bytes at a time")
 $in->recv(my $buf, -s $in_h);
 is($buf, $slurped, "recv'd the same data that we sent");
 
+$in->close;
+$out_h->close;
+
 # TODO test non-blocking filehandles and sockets
