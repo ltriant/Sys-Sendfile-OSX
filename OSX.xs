@@ -1,3 +1,7 @@
+#ifndef __APPLE__
+#error platform not supported
+#endif
+
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <sys/uio.h>
