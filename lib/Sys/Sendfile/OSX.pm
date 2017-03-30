@@ -6,7 +6,7 @@ use strict;
 use warnings;
 
 use Exporter;
-our @EXPORT_OK = qw(sendfile);
+our @EXPORT_OK = qw(sendfile syssendfile);
 
 require XSLoader;
 XSLoader::load('Sys::Sendfile::OSX');
@@ -39,6 +39,11 @@ sub sendfile {
 		$out_h,
 		$count,
 	);
+}
+
+sub syssendfile {
+	my ($in, $out, $count, $offset) = @_;
+	return Sys::Sendfile::OSX::handle::syssendfile($in, $out, $count, $offset);
 }
 
 1;
@@ -81,6 +86,11 @@ contents of the filehandle in one call.
 
 The filehandles can be globs or they can be L<IO::Handle>-like objects
 (or anything that has a C<fileno> method).
+
+=item syssendfile($from, $to, $count, $offset)
+
+A direct one-to-one call into the sendfile() syscall. See the man pages for
+usage information.
 
 =back
 

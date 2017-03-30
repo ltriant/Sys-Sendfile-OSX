@@ -37,3 +37,18 @@ sendfile(in, out, count = 0)
 		}
 
 		XSRETURN_IV(total);
+
+SV *
+syssendfile(in, out, count = 0, offset = 0)
+		int in;
+		int out;
+		size_t count;
+		UV offset;
+	CODE:
+		off_t bytes = count;
+		int ret = sendfile(in, out, offset, &bytes, NULL, 0);
+
+		if ((ret == -1) && (bytes == 0) && (errno != EINTR) && (errno != EAGAIN))
+			XSRETURN_EMPTY;
+		else
+			XSRETURN_IV(bytes);
