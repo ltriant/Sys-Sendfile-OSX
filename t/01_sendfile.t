@@ -3,7 +3,7 @@
 use warnings;
 use strict;
 
-use Test::Most;
+use Test::Most tests => 5;
 use IO::Socket;
 use Fcntl qw(SEEK_SET);
 
@@ -34,5 +34,3 @@ $in->recv(my $buf, -s $in_h);
 is($buf, $slurped, "recv'd the same data that we sent");
 
 # TODO test non-blocking filehandles and sockets
-
-done_testing();
