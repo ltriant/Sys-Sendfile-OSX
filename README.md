@@ -22,6 +22,16 @@ contents of a filehandle to a streaming socket.
 As per the man pages, the sendfile() function was made available as of Mac
 OS X 10.5.
 
+# Sys::Sendfile
+
+Why would you use this module over [Sys::Sendfile](https://metacpan.org/pod/Sys::Sendfile)? The answer is: you
+wouldn't.
+
+I wrote this module because I forgot [Sys::Sendfile](https://metacpan.org/pod/Sys::Sendfile) existed. As such, I
+never released this to CPAN.
+
+Use [Sys::Sendfile](https://metacpan.org/pod/Sys::Sendfile).
+
 # EXPORTED FUNCTIONS
 
 - sendfile($from, $to\[, $count\])

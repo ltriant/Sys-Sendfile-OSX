@@ -72,6 +72,16 @@ contents of a filehandle to a streaming socket.
 As per the man pages, the sendfile() function was made available as of Mac
 OS X 10.5.
 
+=head1 Sys::Sendfile
+
+Why would you use this module over L<Sys::Sendfile>? The answer is: you
+wouldn't.
+
+I wrote this module because I forgot L<Sys::Sendfile> existed. As such, I
+never released this to CPAN.
+
+Use L<Sys::Sendfile>.
+
 =head1 EXPORTED FUNCTIONS
 
 =over
