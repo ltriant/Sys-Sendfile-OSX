@@ -3,7 +3,7 @@
 use warnings;
 use strict;
 
-use Test::Most tests => 5;
+use Test::Most tests => 6;
 use IO::Socket;
 use Fcntl qw(SEEK_SET);
 
@@ -26,12 +26,33 @@ my $in = IO::Socket::INET->new(
 
 my $out_h = $listen->accept;
 
-my $count = 10;
-my $total_sent = Sys::Sendfile::OSX::sendfile($in_h, $out_h, $count);
-is($total_sent, -s $in_h, "sent all of \$0 into socket, $count bytes at a time");
+subtest 'sending entire file' => sub {
+	my $total_sent = Sys::Sendfile::OSX::sendfile($in_h, $out_h);
+	is($total_sent, -s $in_h, "sent all of \$0 into socket in one go");
 
-$in->recv(my $buf, -s $in_h);
-is($buf, $slurped, "recv'd the same data that we sent");
+	$in->recv(my $buf, -s $in_h);
+	is($buf, $slurped, "recv'd the same data that we sent");
+};
+
+subtest 'sending a chunk' => sub {
+	my $chunk_size = 10;
+	my $total_sent = Sys::Sendfile::OSX::sendfile($in_h, $out_h, $chunk_size);
+	is($total_sent, $chunk_size, "sent $chunk_size bytes of \$0 into socket");
+
+	$in->recv(my $buf, $total_sent);
+	is($buf, substr($slurped, 0, $chunk_size), "recv'd the same data that we sent");
+};
+
+subtest 'sending an offsetted chunk' => sub {
+	my $offset     = 10;
+	my $chunk_size = 10;
+
+	my $total_sent = Sys::Sendfile::OSX::sendfile($in_h, $out_h, $chunk_size, $offset);
+	is($total_sent, $chunk_size, "sent $chunk_size bytes of \$0 from offset $offset into socket");
+
+	$in->recv(my $buf, $total_sent);
+	is($buf, substr($slurped, $offset, $chunk_size), "recv'd the same data that we sent");
+};
 
 $in->close;
 $out_h->close;

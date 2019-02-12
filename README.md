@@ -25,30 +25,22 @@ OS X 10.5.
 # Sys::Sendfile
 
 Why would you use this module over [Sys::Sendfile](https://metacpan.org/pod/Sys::Sendfile)? The answer is: you
-wouldn't.
-
-I wrote this module because I forgot [Sys::Sendfile](https://metacpan.org/pod/Sys::Sendfile) existed. As such, I
-never released this to CPAN.
+probably wouldn't. [Sys::Sendfile](https://metacpan.org/pod/Sys::Sendfile) is more portable, and supports more
+platforms.
 
 Use [Sys::Sendfile](https://metacpan.org/pod/Sys::Sendfile).
 
 # EXPORTED FUNCTIONS
 
-- sendfile($from, $to\[, $count\])
+- sendfile($from, $to\[, $count\]\[, $offset\])
 
     Pipes the contents of the filehandle `$from` into the socket stream `$to`.
 
-    Optionally, it will make multiple sendfile() calls to do it, piping across
-    `$count` bytes at a time. Otherwise it will attempt to send the entire
-    contents of the filehandle in one call.
+    Optionally, only `$count` bytes will be sent across to the socket. Specifying a
+    `$count` of 0 is the same as sending the entire file, as per the man page.
 
-    The filehandles can be globs or they can be [IO::Handle](https://metacpan.org/pod/IO::Handle)-like objects
-    (or anything that has a `fileno` method).
-
-- syssendfile($from, $to, $count, $offset)
-
-    A direct one-to-one call into the sendfile() syscall. See the man pages for
-    usage information.
+    Also optionally, `$offset` can be specified to set a specific-sized chunk from
+    a specific offset.
 
 # REPOSITORY
 

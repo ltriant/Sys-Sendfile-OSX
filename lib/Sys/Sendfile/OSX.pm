@@ -6,45 +6,12 @@ use strict;
 use warnings;
 
 use Exporter;
-our @EXPORT_OK = qw(sendfile syssendfile);
+our @EXPORT_OK = qw(sendfile);
 
 require XSLoader;
 XSLoader::load('Sys::Sendfile::OSX');
 
-sub _get_fileno {
-	my ($fh) = @_;
-
-	if (ref $fh eq 'GLOB') {
-		return fileno($fh);
-	}
-
-	# Should handle most IO::Handle-like objects
-	if ($fh->can('fileno')) {
-		return $fh->fileno;
-	}
-
-	return ();
-}
-
-sub sendfile {
-	my ($in, $out, $count) = @_;
-
-	my $in_h  = _get_fileno($in);
-	my $out_h = _get_fileno($out);
-
-	$count ||= 0;
-
-	return Sys::Sendfile::OSX::handle::sendfile(
-		$in_h,
-		$out_h,
-		$count,
-	);
-}
-
-sub syssendfile {
-	my ($in, $out, $count, $offset) = @_;
-	return Sys::Sendfile::OSX::handle::syssendfile($in, $out, $count, $offset);
-}
+*sendfile = \&Sys::Sendfile::OSX::handle::sendfile;
 
 1;
 
@@ -75,10 +42,8 @@ OS X 10.5.
 =head1 Sys::Sendfile
 
 Why would you use this module over L<Sys::Sendfile>? The answer is: you
-wouldn't.
-
-I wrote this module because I forgot L<Sys::Sendfile> existed. As such, I
-never released this to CPAN.
+probably wouldn't. L<Sys::Sendfile> is more portable, and supports more
+platforms.
 
 Use L<Sys::Sendfile>.
 
@@ -86,21 +51,15 @@ Use L<Sys::Sendfile>.
 
 =over
 
-=item sendfile($from, $to[, $count])
+=item sendfile($from, $to[, $count][, $offset])
 
 Pipes the contents of the filehandle C<$from> into the socket stream C<$to>.
 
-Optionally, it will make multiple sendfile() calls to do it, piping across
-C<$count> bytes at a time. Otherwise it will attempt to send the entire
-contents of the filehandle in one call.
+Optionally, only C<$count> bytes will be sent across to the socket. Specifying a
+C<$count> of 0 is the same as sending the entire file, as per the man page.
 
-The filehandles can be globs or they can be L<IO::Handle>-like objects
-(or anything that has a C<fileno> method).
-
-=item syssendfile($from, $to, $count, $offset)
-
-A direct one-to-one call into the sendfile() syscall. See the man pages for
-usage information.
+Also optionally, C<$offset> can be specified to set a specific-sized chunk from
+a specific offset.
 
 =back
 
