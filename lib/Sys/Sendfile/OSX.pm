@@ -63,10 +63,6 @@ a specific offset.
 
 =back
 
-=head1 REPOSITORY
-
-L<https://github.com/ltriant/Sys-Sendfile-OSX>
-
 =head1 AUTHOR
 
 Luke Triantafyllidis <ltriant@cpan.org>
