@@ -5,7 +5,7 @@ package Sys::Sendfile::OSX;
 use strict;
 use warnings;
 
-use Exporter;
+use Exporter qw(import);
 our @EXPORT_OK = qw(sendfile);
 
 require XSLoader;
